@@ -1,0 +1,20 @@
+faster-whisper==1.2.1
+sounddevice
+numpy
+keyboard
+pyperclip
+pystray
+pillow
+
+# GPU (CUDA 12 / cuDNN 9) runtime libs for CTranslate2 >= 4.5.
+# Required because config defaults to device="cuda", compute_type="float16".
+# On CPU-only machines these are unused; set device="cpu" in settings.json.
+nvidia-cublas-cu12
+nvidia-cudnn-cu12
+
+# onnxruntime is pulled in transitively by faster-whisper (Silero VAD backend),
+# pinned here so it's explicit for packaging.
+onnxruntime
+
+# Build-only (not needed to run from source): PyInstaller for the .exe.
+# pip install pyinstaller

@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environment (users create their own; never commit it)
+venv/
+.venv/
+
+# PyInstaller build output
+build/
+dist/
+*.manifest
+
+# App runtime / local files
+# settings.json = per-user config, generated on first run
+settings.json
+*.log
+# *.wav = local test recordings; keep none in the repo
+*.wav
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Personal notes — kept locally, not published
+docs/RECORDING_A_DEMO.md
+*RECORDING_A_DEMO*
+
