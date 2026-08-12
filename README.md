@@ -79,8 +79,8 @@ python main.py
 
 ## Configuration
 
-Edit `config.py` defaults, or — after the first run — edit the generated
-`settings.json`:
+On first run WhisperKey writes a `settings.json` next to the app — edit that
+(or change the defaults in `config.py`):
 
 | Setting | What it does | Default |
 |---|---|---|
@@ -92,13 +92,34 @@ Edit `config.py` defaults, or — after the first run — edit the generated
 | `initial_prompt` | a sentence ending in varied punctuation; nudges the model to punctuate | (a default) |
 | `show_overlay` | show the on-screen recording indicator | `true` |
 
-### No GPU?
+## No NVIDIA GPU? (CPU quick start)
 
-Set these in `settings.json` and WhisperKey runs on CPU (slower, but works):
+WhisperKey runs fine on CPU — just a bit slower. Full setup:
+
+```powershell
+git clone https://github.com/stevenmettler/WhisperKey.git
+cd WhisperKey
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+
+# Optional: the CUDA libraries aren't used on CPU — uninstall to save ~1.3 GB
+pip uninstall -y nvidia-cublas-cu12 nvidia-cudnn-cu12
+```
+
+Then tell it to use the CPU. Run it once so `settings.json` is created, quit,
+and set these three values:
 
 ```json
 { "device": "cpu", "compute_type": "int8", "model_size": "base.en" }
 ```
+
+(or just edit the same keys in `config.py` before the first run). Start it with
+`python main.py` as usual.
+
+**CPU tips:** use `tiny.en` or `base.en` for snappy response — `small.en` and
+larger get noticeably slower without a GPU. Everything else (hotkey, paste,
+overlay, punctuation) works exactly the same.
 
 ## Building a standalone .exe
 

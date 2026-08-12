@@ -5,8 +5,15 @@ dict for now — swap for a JSON file + settings UI once the core loop works.
 
 import json
 import os
+import sys
 
-CONFIG_PATH = os.path.join(os.path.dirname(__file__), "settings.json")
+# settings.json lives next to the app: the source dir when run from source, or
+# next to the .exe when frozen by PyInstaller (not the temp _MEIPASS dir).
+if getattr(sys, "frozen", False):
+    _BASE_DIR = os.path.dirname(sys.executable)
+else:
+    _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CONFIG_PATH = os.path.join(_BASE_DIR, "settings.json")
 
 DEFAULTS = {
     "model_size": "small.en",      # tiny.en, base.en, small.en, medium.en, large-v3
@@ -27,9 +34,14 @@ def load_config():
     if os.path.exists(CONFIG_PATH):
         with open(CONFIG_PATH, "r") as f:
             saved = json.load(f)
-        merged = {**DEFAULTS, **saved}
-        return merged
-    return dict(DEFAULTS)
+        return {**DEFAULTS, **saved}
+    # First run: write out the defaults so there's a settings.json to edit.
+    cfg = dict(DEFAULTS)
+    try:
+        save_config(cfg)
+    except OSError:
+        pass  # read-only location; fall back to in-memory defaults
+    return cfg
 
 
 def save_config(config):
